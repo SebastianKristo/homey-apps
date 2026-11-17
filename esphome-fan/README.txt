@@ -7,4 +7,4 @@ Features:
 - Random / wind mode
 - Flows: set speed, speed up/down, run for X minutes then turn off, random mode on/off, "speed is" condition and "speed changed" trigger
 
-Requirement: add "web_server:" (port 80) to the ESPHome config of the board.
+Uses the ESPHome native API (port 6053) – the same connection Home Assistant uses. No changes to the ESPHome config needed. Fans are found automatically on the network, and button presses on the fan show up in Homey instantly.

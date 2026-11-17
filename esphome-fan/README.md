@@ -3,21 +3,13 @@
 Styr vifter med flere hastigheter som er koblet til et ESP32-relékort med ESPHome
 (f.eks. [Ultimate Fan Project v4](https://github.com/3ative/Ultimate-Fan-Project-V4)).
 
-## Krav i ESPHome
-Appen bruker ESPHome sin lokale REST-API. Legg til dette i YAML-en og flash på nytt:
+## Tilkobling
+Appen bruker ESPHome sin innebygde API (port 6053) – samme som Home Assistant.
+Ingen endringer i YAML trengs, så lenge `api:` er med (uten `encryption:`).
+Viftene finnes automatisk via mDNS, og endringer fra knappene på vifta pushes til Homey med en gang.
+Homey og Home Assistant kan være koblet til samtidig.
 
-```yaml
-web_server:
-  port: 80
-  version: 3
-  # valgfritt:
-  # auth:
-  #   username: admin
-  #   password: hemmelig
-```
-
-Gi gjerne kortet fast IP (DHCP-reservasjon i ruteren). NB: Ultimate Fan-configen
-venter 10 s etter oppstart før WiFi skrus på – vifta vises som utilgjengelig i Homey så lenge.
+NB: Ultimate Fan-configen venter 10 s etter oppstart før WiFi skrus på.
 
 ## To moduser (oppdages automatisk ved paring)
 **Ultimate Fan** – kortet har `Master`-bryter, `Speed`-tall og `Random`-bryter.

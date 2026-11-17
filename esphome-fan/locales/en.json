@@ -1,10 +1,9 @@
 {
   "pair": {
     "title": "Connect ESP32 fan",
-    "intro": "The ESPHome config must contain web_server: (port 80). Username/password only if you set auth on web_server.",
+    "intro": "Uses the ESPHome native API (same as Home Assistant). Port is normally 6053. Password only for old firmwares with api: password.",
     "host": "IP address",
-    "username": "Username (optional)",
-    "password": "Password (optional)",
+    "password": "API password (optional)",
     "scan": "Find board",
     "configure": "Set up fan",
     "name": "Name",
@@ -15,7 +14,7 @@
     "add_speed": "Add speed",
     "add": "Add fan",
     "no_host": "Enter the IP address of the board",
-    "no_entities": "Found no switches on the board. Is web_server: enabled in ESPHome?",
+    "no_entities": "Found no switches on the board.",
     "no_relays": "Pick at least one relay",
     "type": "Fan type",
     "type_tower": "Tower fan",
@@ -29,11 +28,15 @@
     "badge_fan": "Fan",
     "badge_suggested": "Suggested",
     "badge_added": "Already added",
-    "badge_no_web": "web_server missing",
-    "badge_auth": "Password"
+    "badge_auth": "Password",
+    "port": "Port",
+    "badge_offline": "Not responding",
+    "badge_encrypted": "Encrypted",
+    "already_added": "This fan is already added"
   },
   "device": {
     "no_relays": "No relays configured",
-    "no_random": "Random mode is not available on this fan"
+    "no_random": "Random mode is not available on this fan",
+    "disconnected": "Connection to the fan lost – reconnecting…"
   }
 }

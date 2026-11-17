@@ -1,10 +1,10 @@
 'use strict';
 
 const Homey = require('homey');
-const EspHomeApi = require('./EspHomeApi');
+const EspHomeNative = require('./EspHomeNative');
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const RECONNECT_KEYS = ['host', 'username', 'password', 'relays', 'poll_interval', 'mode', 'master_id', 'speed_id', 'random_id', 'max_speed'];
+const RECONNECT_KEYS = ['host', 'port', 'password', 'relays', 'poll_interval', 'mode', 'master_id', 'speed_id', 'random_id', 'max_speed'];
 
 /**
  * Two control modes:
@@ -31,7 +31,22 @@ module.exports = class FanDevice extends Homey.Device {
   reconnect() {
     const s = this.getSettings();
     this.mode = s.mode || 'relays';
-    this.api = new EspHomeApi({ host: s.host, username: s.username, password: s.password });
+    if (this.api) {
+      this.api.removeAllListeners();
+      this.api.close();
+    }
+    this.api = new EspHomeNative({ host: s.host, port: s.port || 6053, password: s.password });
+    // Push updates: buttons on the fan show up in Homey immediately.
+    this.api.on('state', () => {
+      this.homey.clearTimeout(this._pushTimer);
+      this._pushTimer = this.homey.setTimeout(() => this.poll(), 150);
+    });
+    this.api.on('disconnected', () => {
+      this.setUnavailable(this.homey.__('device.disconnected')).catch(this.error);
+      this.homey.clearTimeout(this._retry);
+      this._retry = this.homey.setTimeout(() => this.poll(), 5000);
+    });
+    this.api.on('error', err => this.error('api:', err.message));
     this.relays = String(s.relays || '').split(',').map(x => x.trim()).filter(Boolean);
     this.maxSpeed = this.mode === 'relays' ? this.relays.length : (s.max_speed || 3);
     this._syncRandomCapability().catch(this.error);
@@ -85,6 +100,8 @@ module.exports = class FanDevice extends Homey.Device {
 
   onDeleted() {
     this.homey.clearInterval(this._poll);
+    this.homey.clearTimeout(this._retry);
+    if (this.api) this.api.close();
     this.homey.clearTimeout(this._runTimer);
   }
 

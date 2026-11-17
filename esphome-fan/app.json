@@ -408,20 +408,22 @@
               "value": ""
             },
             {
-              "id": "username",
-              "type": "text",
+              "id": "port",
+              "type": "number",
               "label": {
-                "en": "Username (optional)",
-                "no": "Brukernavn (valgfritt)"
+                "en": "API port",
+                "no": "API-port"
               },
-              "value": ""
+              "value": 6053,
+              "min": 1,
+              "max": 65535
             },
             {
               "id": "password",
               "type": "password",
               "label": {
-                "en": "Password (optional)",
-                "no": "Passord (valgfritt)"
+                "en": "API password (old firmwares only)",
+                "no": "API-passord (kun eldre firmware)"
               },
               "value": ""
             },
@@ -429,13 +431,13 @@
               "id": "poll_interval",
               "type": "number",
               "label": {
-                "en": "Poll interval",
-                "no": "Oppdateringsintervall"
+                "en": "Check interval",
+                "no": "Kontrollintervall"
               },
               "units": {
                 "en": "s"
               },
-              "value": 10,
+              "value": 30,
               "min": 2,
               "max": 300
             }
@@ -619,20 +621,22 @@
               "value": ""
             },
             {
-              "id": "username",
-              "type": "text",
+              "id": "port",
+              "type": "number",
               "label": {
-                "en": "Username (optional)",
-                "no": "Brukernavn (valgfritt)"
+                "en": "API port",
+                "no": "API-port"
               },
-              "value": ""
+              "value": 6053,
+              "min": 1,
+              "max": 65535
             },
             {
               "id": "password",
               "type": "password",
               "label": {
-                "en": "Password (optional)",
-                "no": "Passord (valgfritt)"
+                "en": "API password (old firmwares only)",
+                "no": "API-passord (kun eldre firmware)"
               },
               "value": ""
             },
@@ -640,13 +644,13 @@
               "id": "poll_interval",
               "type": "number",
               "label": {
-                "en": "Poll interval",
-                "no": "Oppdateringsintervall"
+                "en": "Check interval",
+                "no": "Kontrollintervall"
               },
               "units": {
                 "en": "s"
               },
-              "value": 10,
+              "value": 30,
               "min": 2,
               "max": 300
             }

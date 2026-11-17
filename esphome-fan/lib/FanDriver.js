@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const EspHomeApi = require('./EspHomeApi');
+const EspHomeNative = require('./EspHomeNative');
 
 const normMac = mac => String(mac || '').toLowerCase().replace(/[^0-9a-f]/g, '');
 
@@ -29,10 +29,17 @@ module.exports = class FanDriver extends Homey.Driver {
     return ids;
   }
 
-  async _probe({ host, username, password }) {
+  async _probe({ host, port, password }) {
     if (!host) throw new Error(this.homey.__('pair.no_host'));
-    const api = new EspHomeApi({ host, username, password });
-    const entities = await api.listEntities();
+    const api = new EspHomeNative({ host, port: port || 6053, password });
+    let entities;
+    let info;
+    try {
+      entities = await api.listEntities();
+      info = api.deviceInfo || {};
+    } finally {
+      api.close();
+    }
     if (!entities.length) throw new Error(this.homey.__('pair.no_entities'));
     const switches = entities.filter(e => e.domain === 'switch');
     const numbers = entities.filter(e => e.domain === 'number');
@@ -41,6 +48,8 @@ module.exports = class FanDriver extends Homey.Driver {
     const speed = find(numbers, /^(fan_?)?speed$/i);
     const random = find(switches, /^random$/i);
     return {
+      mac: normMac(info.mac),
+      boardName: info.friendlyName || info.name || '',
       ultimate: !!(master.id && speed.id),
       master: master.id || null,
       speed: speed.id || null,
@@ -66,16 +75,18 @@ module.exports = class FanDriver extends Homey.Driver {
         id: mac || r.address,
         mac,
         host: r.address,
+        port: r.port || 6053,
         name: txt.friendly_name || (r.name || '').replace(/\._esphomelib.*$/, '') || r.address,
         hostname: (r.name || '').split('.')[0],
         taken: taken.has(mac) || taken.has(r.address),
       };
       try {
-        board.scan = await this._probe({ host: r.address });
-        board.webServer = true;
+        board.scan = await this._probe({ host: r.address, port: board.port });
+        board.ok = true;
       } catch (err) {
-        board.webServer = false;
-        board.error = /401|Unauthorized/.test(err.message) ? 'auth' : 'no_web_server';
+        board.ok = false;
+        board.error = /passord|password/i.test(err.message) ? 'auth'
+          : /krypter|encrypt/i.test(err.message) ? 'encrypted' : 'offline';
       }
       const fanName = /fan|vifte/i.test(`${board.name} ${board.hostname}`);
       board.suggested = !!(board.scan && board.scan.ultimate) || fanName;
@@ -99,18 +110,19 @@ module.exports = class FanDriver extends Homey.Driver {
     return { ...conn, mode: 'relays', relays: relays.join(','), max_speed: relays.length };
   }
 
-  _registerHandlers(session, onCreate) {
+  _registerHandlers(session, onCreate, repairing = false) {
     let current = null;
 
     session.setHandler('discover', async () => this._discover());
     session.setHandler('fan_type', async () => this.fanType);
 
-    session.setHandler('scan', async ({ host, username, password, mac, name }) => {
-      const scan = await this._probe({ host, username, password });
+    session.setHandler('scan', async ({ host, port, password, mac, name }) => {
+      const scan = await this._probe({ host, port, password });
+      if (this._takenIds().has(scan.mac) && !repairing) throw new Error(this.homey.__('pair.already_added'));
       current = {
-        conn: { host: String(host).trim(), username: username || '', password: password || '' },
-        mac: normMac(mac),
-        boardName: name,
+        conn: { host: String(host).trim(), port: Number(port) || 6053, password: password || '' },
+        mac: normMac(mac) || scan.mac,
+        boardName: name || scan.boardName,
         scan,
       };
       return scan;
@@ -138,7 +150,7 @@ module.exports = class FanDriver extends Homey.Driver {
       await device.setSettings(settings);
       device.reconnect();
       return null;
-    });
+    }, true);
   }
 
 };

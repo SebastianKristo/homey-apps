@@ -31,8 +31,8 @@
       <input class="homey-form-input" id="host" type="text" placeholder="192.168.1.60" />
     </div>
     <div class="homey-form-group">
-      <label class="homey-form-label" for="username" data-i18n="pair.username"></label>
-      <input class="homey-form-input" id="username" type="text" />
+      <label class="homey-form-label" for="port" data-i18n="pair.port"></label>
+      <input class="homey-form-input" id="port" type="number" value="6053" />
     </div>
     <div class="homey-form-group">
       <label class="homey-form-label" for="password" data-i18n="pair.password"></label>
@@ -71,7 +71,8 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&am
 function badge(b) {
   if (b.taken) return `<span class="badge grey">${Homey.__('pair.badge_added')}</span>`;
   if (b.error === 'auth') return `<span class="badge warn">${Homey.__('pair.badge_auth')}</span>`;
-  if (!b.webServer) return `<span class="badge warn">${Homey.__('pair.badge_no_web')}</span>`;
+  if (b.error === 'encrypted') return `<span class="badge warn">${Homey.__('pair.badge_encrypted')}</span>`;
+  if (!b.ok) return `<span class="badge warn">${Homey.__('pair.badge_offline')}</span>`;
   if (b.scan && b.scan.ultimate) return `<span class="badge">${Homey.__('pair.badge_fan')}</span>`;
   if (b.suggested) return `<span class="badge">${Homey.__('pair.badge_suggested')}</span>`;
   return '';
@@ -89,7 +90,7 @@ async function search() {
     $('searchStatus').textContent = Homey.__('pair.found_n').replace('{n}', boards.length);
     for (const b of boards) {
       const el = document.createElement('div');
-      const usable = !b.taken && (b.webServer || b.error === 'auth');
+      const usable = !b.taken && (b.ok || b.error === 'auth');
       el.className = 'board' + (usable ? '' : ' disabled');
       el.innerHTML = `<div class="info"><div class="title">${esc(b.name)}</div>
         <div class="sub">${esc(b.host)}${b.hostname ? ' · ' + esc(b.hostname) : ''}</div></div>${badge(b)}`;
@@ -98,10 +99,11 @@ async function search() {
           board = b;
           if (b.error === 'auth') {
             $('host').value = b.host;
+            $('port').value = b.port;
             show('step1');
             return;
           }
-          connect({ host: b.host, mac: b.mac, name: b.name });
+          connect({ host: b.host, port: b.port, mac: b.mac, name: b.name });
         });
       }
       $('boards').append(el);
@@ -160,7 +162,7 @@ $('form1').addEventListener('submit', e => {
   e.preventDefault();
   connect({
     host: $('host').value,
-    username: $('username').value,
+    port: Number($('port').value) || 6053,
     password: $('password').value,
     mac: board && board.mac,
     name: board && board.name,

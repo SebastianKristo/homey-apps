@@ -7,4 +7,4 @@ Funksjoner:
 - Tilfeldig/vind-modus
 - Flows: sett hastighet, øk/senk, kjør X minutter og slå av, tilfeldig modus av/på, betingelsen «hastighet er» og triggeren «hastighet endret»
 
-Krav: legg til «web_server:» (port 80) i ESPHome-konfigurasjonen på kortet.
+Bruker ESPHome sin innebygde API (port 6053) – samme tilkobling som Home Assistant. Ingen endringer i ESPHome-konfigurasjonen trengs. Viftene finnes automatisk på nettverket, og knappetrykk på vifta vises i Homey med en gang.

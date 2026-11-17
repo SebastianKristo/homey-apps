@@ -1,10 +1,9 @@
 {
   "pair": {
     "title": "Koble til ESP32-vifte",
-    "intro": "ESPHome-konfigurasjonen må inneholde web_server: (port 80). Brukernavn/passord kun hvis du har satt auth på web_server.",
+    "intro": "Bruker ESPHome sin innebygde API (samme som Home Assistant). Port er normalt 6053. Passord kun for eldre firmware med api: password.",
     "host": "IP-adresse",
-    "username": "Brukernavn (valgfritt)",
-    "password": "Passord (valgfritt)",
+    "password": "API-passord (valgfritt)",
     "scan": "Finn kortet",
     "configure": "Sett opp vifte",
     "name": "Navn",
@@ -15,7 +14,7 @@
     "add_speed": "Legg til hastighet",
     "add": "Legg til vifte",
     "no_host": "Skriv inn IP-adressen til kortet",
-    "no_entities": "Fant ingen brytere på kortet. Er web_server: aktivert i ESPHome?",
+    "no_entities": "Fant ingen brytere på kortet.",
     "no_relays": "Velg minst ett relé",
     "type": "Viftetype",
     "type_tower": "Ståvifte (tårn)",
@@ -29,11 +28,15 @@
     "badge_fan": "Vifte",
     "badge_suggested": "Forslag",
     "badge_added": "Allerede lagt til",
-    "badge_no_web": "web_server mangler",
-    "badge_auth": "Passord"
+    "badge_auth": "Passord",
+    "port": "Port",
+    "badge_offline": "Svarer ikke",
+    "badge_encrypted": "Kryptert",
+    "already_added": "Denne vifta er allerede lagt til"
   },
   "device": {
     "no_relays": "Ingen reléer er satt opp",
-    "no_random": "Tilfeldig modus er ikke tilgjengelig på denne vifta"
+    "no_random": "Tilfeldig modus er ikke tilgjengelig på denne vifta",
+    "disconnected": "Mistet kontakt med vifta – kobler til igjen…"
   }
 }
