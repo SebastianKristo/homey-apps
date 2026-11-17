@@ -1,0 +1,15 @@
+{
+  "type": "enum",
+  "title": { "en": "Fan speed", "no": "Viftehastighet" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "picker",
+  "icon": "/assets/icon.svg",
+  "values": [
+    { "id": "0", "title": { "en": "Off", "no": "Av" } },
+    { "id": "1", "title": { "en": "Speed 1 (low)", "no": "Trinn 1 (lav)" } },
+    { "id": "2", "title": { "en": "Speed 2", "no": "Trinn 2" } },
+    { "id": "3", "title": { "en": "Speed 3", "no": "Trinn 3" } },
+    { "id": "4", "title": { "en": "Speed 4", "no": "Trinn 4" } }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "title": { "en": "Fan speed changed", "no": "Viftehastighet endret" },
+  "tokens": [ { "name": "speed", "type": "number", "title": { "en": "Speed", "no": "Hastighet" }, "example": 2 } ],
+  "args": [ { "type": "device", "name": "device", "filter": "driver_id=fan" } ]
+}

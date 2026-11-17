@@ -1,0 +1,25 @@
+{
+  "pair": {
+    "title": "Connect ESP32 fan",
+    "intro": "The ESPHome config must contain web_server: (port 80). Username/password only if you set auth on web_server.",
+    "host": "IP address",
+    "username": "Username (optional)",
+    "password": "Password (optional)",
+    "scan": "Find board",
+    "configure": "Set up fan",
+    "name": "Name",
+    "detected_ultimate": "Ultimate Fan firmware detected – {n} speeds, Master and Random. Buttons and LEDs on the fan keep working.",
+    "detected_relays": "Raw relay board. Pick which relay drives each speed, lowest first.",
+    "relay_hint": "Only one relay will be on at a time.",
+    "speed_n": "Speed {n}",
+    "add_speed": "Add speed",
+    "add": "Add fan",
+    "no_host": "Enter the IP address of the board",
+    "no_entities": "Found no switches on the board. Is web_server: enabled in ESPHome?",
+    "no_relays": "Pick at least one relay"
+  },
+  "device": {
+    "no_relays": "No relays configured",
+    "no_random": "Random mode is not available on this fan"
+  }
+}

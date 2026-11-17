@@ -1,0 +1,25 @@
+{
+  "pair": {
+    "title": "Koble til ESP32-vifte",
+    "intro": "ESPHome-konfigurasjonen må inneholde web_server: (port 80). Brukernavn/passord kun hvis du har satt auth på web_server.",
+    "host": "IP-adresse",
+    "username": "Brukernavn (valgfritt)",
+    "password": "Passord (valgfritt)",
+    "scan": "Finn kortet",
+    "configure": "Sett opp vifte",
+    "name": "Navn",
+    "detected_ultimate": "Ultimate Fan-firmware funnet – {n} hastigheter, Master og Random. Knapper og LED-er på vifta fungerer som før.",
+    "detected_relays": "Vanlig relékort. Velg hvilket relé som gir hver hastighet, laveste først.",
+    "relay_hint": "Bare ett relé er på om gangen.",
+    "speed_n": "Hastighet {n}",
+    "add_speed": "Legg til hastighet",
+    "add": "Legg til vifte",
+    "no_host": "Skriv inn IP-adressen til kortet",
+    "no_entities": "Fant ingen brytere på kortet. Er web_server: aktivert i ESPHome?",
+    "no_relays": "Velg minst ett relé"
+  },
+  "device": {
+    "no_relays": "Ingen reléer er satt opp",
+    "no_random": "Tilfeldig modus er ikke tilgjengelig på denne vifta"
+  }
+}

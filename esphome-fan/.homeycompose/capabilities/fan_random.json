@@ -1,0 +1,10 @@
+{
+  "type": "boolean",
+  "title": { "en": "Random / wind mode", "no": "Tilfeldig / vindmodus" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "icon": "/assets/wind.svg",
+  "insights": true
+}

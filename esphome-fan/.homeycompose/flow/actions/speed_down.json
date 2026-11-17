@@ -1,0 +1,1 @@
+{ "title": { "en": "Decrease fan speed", "no": "Senk viftehastighet" }, "args": [ { "type": "device", "name": "device", "filter": "driver_id=fan" } ] }
