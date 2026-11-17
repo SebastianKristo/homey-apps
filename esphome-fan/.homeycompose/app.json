@@ -1,15 +1,22 @@
 {
   "id": "no.kristo.esphomefan",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "compatibility": ">=12.3.0",
   "sdk": 3,
-  "platforms": ["local"],
-  "name": { "en": "ESPHome Relay Fan", "no": "ESPHome Relévifte" },
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "ESPHome Relay Fan",
+    "no": "ESPHome Relévifte"
+  },
   "description": {
     "en": "Control multi-speed fans wired to an ESP32 relay board running ESPHome",
     "no": "Styr vifter med flere hastigheter via et ESP32-relékort med ESPHome"
   },
-  "category": ["climate"],
+  "category": [
+    "climate"
+  ],
   "permissions": [],
   "brandColor": "#2A9D8F",
   "images": {
@@ -17,12 +24,29 @@
     "large": "/assets/images/large.png",
     "xlarge": "/assets/images/xlarge.png"
   },
-  "author": { "name": "Sebastian Kristo Jemtland", "email": "sebastian@kristo.no" },
+  "author": {
+    "name": "Sebastian Kristo Jemtland",
+    "email": "sebastian@kristo.no"
+  },
   "tags": {
-    "en": ["fan", "esphome", "esp32", "relay", "ventilation"],
-    "no": ["vifte", "esphome", "esp32", "relé", "ventilasjon"]
+    "en": [
+      "fan",
+      "esphome",
+      "esp32",
+      "relay",
+      "ventilation"
+    ],
+    "no": [
+      "vifte",
+      "esphome",
+      "esp32",
+      "relé",
+      "ventilasjon"
+    ]
   },
   "source": "https://github.com/SebastianKristo/homey-apps/tree/main/esphome-fan",
-  "bugs": { "url": "https://github.com/SebastianKristo/homey-apps/issues" },
+  "bugs": {
+    "url": "https://github.com/SebastianKristo/homey-apps/issues"
+  },
   "support": "https://github.com/SebastianKristo/homey-apps/issues"
 }
