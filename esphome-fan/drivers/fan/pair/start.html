@@ -26,6 +26,13 @@
       <label class="homey-form-label" for="name" data-i18n="pair.name"></label>
       <input class="homey-form-input" id="name" type="text" placeholder="Vifte kjøkken" />
     </div>
+    <div class="homey-form-group">
+      <label class="homey-form-label" for="ftype" data-i18n="pair.type"></label>
+      <select class="homey-form-select" id="ftype">
+        <option value="tower" data-i18n="pair.type_tower"></option>
+        <option value="desk" data-i18n="pair.type_desk"></option>
+      </select>
+    </div>
     <div id="relayGroup" style="display:none">
       <p class="homey-subtitle" data-i18n="pair.relay_hint"></p>
       <div id="slots"></div>
@@ -88,7 +95,7 @@ $('form2').addEventListener('submit', async e => {
   const relays = [...document.querySelectorAll('select.relay')].map(s => s.value).filter(Boolean);
   Homey.showLoadingOverlay();
   try {
-    const device = await Homey.emit('create', { name: $('name').value, relays });
+    const device = await Homey.emit('create', { name: $('name').value, relays, type: $('ftype').value });
     if (device) await Homey.createDevice(device);
     Homey.done();
   } catch (err) {

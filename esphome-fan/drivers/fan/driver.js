@@ -64,11 +64,13 @@ module.exports = class FanDriver extends Homey.Driver {
       scanned = await this._scan(data);
       return scanned.result;
     });
-    session.setHandler('create', async ({ name, relays }) => {
+    session.setHandler('create', async ({ name, relays, type }) => {
       if (!scanned) throw new Error('Scan first');
+      const icon = type === 'desk' ? '/desk.svg' : '/tower.svg';
       const settings = this._settings(scanned.conn, scanned.result, relays);
       return {
-        name: name || 'Vifte',
+        name: name || (type === 'desk' ? 'Pultvifte' : 'Ståvifte'),
+        icon,
         data: { id: `${scanned.conn.host}:${settings.mode}:${settings.relays || settings.master_id}` },
         settings,
       };

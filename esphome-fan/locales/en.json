@@ -16,7 +16,10 @@
     "add": "Add fan",
     "no_host": "Enter the IP address of the board",
     "no_entities": "Found no switches on the board. Is web_server: enabled in ESPHome?",
-    "no_relays": "Pick at least one relay"
+    "no_relays": "Pick at least one relay",
+    "type": "Fan type",
+    "type_tower": "Tower fan",
+    "type_desk": "Desk fan"
   },
   "device": {
     "no_relays": "No relays configured",

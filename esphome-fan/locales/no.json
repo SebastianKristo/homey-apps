@@ -16,7 +16,10 @@
     "add": "Legg til vifte",
     "no_host": "Skriv inn IP-adressen til kortet",
     "no_entities": "Fant ingen brytere på kortet. Er web_server: aktivert i ESPHome?",
-    "no_relays": "Velg minst ett relé"
+    "no_relays": "Velg minst ett relé",
+    "type": "Viftetype",
+    "type_tower": "Ståvifte (tårn)",
+    "type_desk": "Pultvifte"
   },
   "device": {
     "no_relays": "Ingen reléer er satt opp",
