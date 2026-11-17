@@ -1,1 +1,1 @@
-{ "title": { "en": "Increase fan speed", "no": "Øk viftehastighet" }, "args": [ { "type": "device", "name": "device", "filter": "driver_id=fan" } ] }
+{ "title": { "en": "Increase fan speed", "no": "Øk viftehastighet" }, "args": [ { "type": "device", "name": "device", "filter": "driver_id=tower|desk" } ] }

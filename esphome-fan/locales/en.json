@@ -19,7 +19,18 @@
     "no_relays": "Pick at least one relay",
     "type": "Fan type",
     "type_tower": "Tower fan",
-    "type_desk": "Desk fan"
+    "type_desk": "Desk fan",
+    "search_title": "Find fan",
+    "searching": "Searching for ESPHome boards on the network…",
+    "none_found": "No ESPHome boards found. Try again, or enter the IP address manually.",
+    "found_n": "Found {n} ESPHome board(s). Fans are listed first.",
+    "search_again": "Search again",
+    "manual": "Enter IP address manually",
+    "badge_fan": "Fan",
+    "badge_suggested": "Suggested",
+    "badge_added": "Already added",
+    "badge_no_web": "web_server missing",
+    "badge_auth": "Password"
   },
   "device": {
     "no_relays": "No relays configured",

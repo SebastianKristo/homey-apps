@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const EspHomeApi = require('../../lib/EspHomeApi');
+const EspHomeApi = require('./EspHomeApi');
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const RECONNECT_KEYS = ['host', 'username', 'password', 'relays', 'poll_interval', 'mode', 'master_id', 'speed_id', 'random_id', 'max_speed'];
@@ -23,7 +23,7 @@ module.exports = class FanDevice extends Homey.Device {
     this.registerCapabilityListener('onoff', on => this.setSpeed(on ? this._lastSpeed : 0));
     this.registerCapabilityListener('fan_speed_step', v => this.setSpeed(Number(v)));
     this.registerCapabilityListener('dim', v => this.setSpeed(this._dimToSpeed(v)));
-    this.registerCapabilityListener('fan_random', v => this.setRandom(v));
+    this._listenRandom();
 
     this.reconnect();
   }
@@ -40,10 +40,19 @@ module.exports = class FanDevice extends Homey.Device {
     this.poll();
   }
 
+  _listenRandom() {
+    if (this._randomListening || !this.hasCapability('fan_random')) return;
+    this.registerCapabilityListener('fan_random', v => this.setRandom(v));
+    this._randomListening = true;
+  }
+
   async _syncRandomCapability() {
     const want = this.mode === 'ultimate' && !!this.getSetting('random_id');
     const has = this.hasCapability('fan_random');
-    if (want && !has) await this.addCapability('fan_random');
+    if (want && !has) {
+      await this.addCapability('fan_random');
+      this._listenRandom();
+    }
     if (!want && has) await this.removeCapability('fan_random');
   }
 
@@ -51,6 +60,27 @@ module.exports = class FanDevice extends Homey.Device {
     if (changedKeys.some(k => RECONNECT_KEYS.includes(k))) {
       this.homey.setTimeout(() => this.reconnect(), 100);
     }
+  }
+
+  // ---- mDNS: keep the IP up to date when the board gets a new address ----
+  onDiscoveryResult(result) {
+    const mac = String((result.txt && result.txt.mac) || result.id || '').toLowerCase().replace(/[^0-9a-f]/g, '');
+    return !!mac && mac === this.getData().id;
+  }
+
+  async onDiscoveryAvailable(result) {
+    await this._updateAddress(result.address);
+  }
+
+  async onDiscoveryAddressChanged(result) {
+    await this._updateAddress(result.address);
+  }
+
+  async _updateAddress(address) {
+    if (!address || address === this.getSetting('host')) return;
+    this.log('board moved to', address);
+    await this.setSettings({ host: address }).catch(this.error);
+    this.reconnect();
   }
 
   onDeleted() {
@@ -83,7 +113,7 @@ module.exports = class FanDevice extends Homey.Device {
     }
     // In random mode the speed changes every 2 s – don't spam flows with that.
     if (prev !== speed && !random) {
-      this.driver.speedChanged.trigger(this, { speed }).catch(this.error);
+      this.homey.app.speedChanged.trigger(this, { speed }).catch(this.error);
     }
   }
 

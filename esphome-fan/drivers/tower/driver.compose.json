@@ -1,0 +1,210 @@
+{
+  "name": {
+    "en": "Tower fan",
+    "no": "Ståvifte"
+  },
+  "class": "fan",
+  "capabilities": [
+    "onoff",
+    "fan_speed_step",
+    "dim",
+    "fan_random"
+  ],
+  "capabilitiesOptions": {
+    "dim": {
+      "title": {
+        "en": "Speed",
+        "no": "Hastighet"
+      }
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "start"
+    }
+  ],
+  "repair": [
+    {
+      "id": "start"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Connection",
+        "no": "Tilkobling"
+      },
+      "children": [
+        {
+          "id": "host",
+          "type": "text",
+          "label": {
+            "en": "Host / IP",
+            "no": "Vert / IP"
+          },
+          "value": ""
+        },
+        {
+          "id": "username",
+          "type": "text",
+          "label": {
+            "en": "Username (optional)",
+            "no": "Brukernavn (valgfritt)"
+          },
+          "value": ""
+        },
+        {
+          "id": "password",
+          "type": "password",
+          "label": {
+            "en": "Password (optional)",
+            "no": "Passord (valgfritt)"
+          },
+          "value": ""
+        },
+        {
+          "id": "poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Poll interval",
+            "no": "Oppdateringsintervall"
+          },
+          "units": {
+            "en": "s"
+          },
+          "value": 10,
+          "min": 2,
+          "max": 300
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Mode",
+        "no": "Modus"
+      },
+      "children": [
+        {
+          "id": "mode",
+          "type": "dropdown",
+          "label": {
+            "en": "Control mode",
+            "no": "Styringsmodus"
+          },
+          "value": "ultimate",
+          "values": [
+            {
+              "id": "ultimate",
+              "label": {
+                "en": "Ultimate Fan firmware (Master/Speed/Random)",
+                "no": "Ultimate Fan-firmware (Master/Speed/Random)"
+              }
+            },
+            {
+              "id": "relays",
+              "label": {
+                "en": "Raw relays",
+                "no": "Rene reléer"
+              }
+            }
+          ]
+        },
+        {
+          "id": "master_id",
+          "type": "text",
+          "label": {
+            "en": "Master switch ID",
+            "no": "Master-bryter-ID"
+          },
+          "value": "master"
+        },
+        {
+          "id": "speed_id",
+          "type": "text",
+          "label": {
+            "en": "Speed number ID",
+            "no": "Speed-tall-ID"
+          },
+          "value": "speed"
+        },
+        {
+          "id": "random_id",
+          "type": "text",
+          "label": {
+            "en": "Random switch ID",
+            "no": "Random-bryter-ID"
+          },
+          "hint": {
+            "en": "Leave empty if not available",
+            "no": "Tom hvis ikke tilgjengelig"
+          },
+          "value": "random"
+        },
+        {
+          "id": "max_speed",
+          "type": "number",
+          "label": {
+            "en": "Number of speeds",
+            "no": "Antall hastigheter"
+          },
+          "value": 3,
+          "min": 1,
+          "max": 4
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "label": {
+        "en": "Relays",
+        "no": "Reléer"
+      },
+      "children": [
+        {
+          "id": "relays",
+          "type": "text",
+          "label": {
+            "en": "Relay IDs, lowest speed first",
+            "no": "Relé-ID-er, laveste hastighet først"
+          },
+          "hint": {
+            "en": "Comma separated ESPHome switch IDs, e.g. relay_1,relay_2,relay_3",
+            "no": "Kommaseparerte ESPHome switch-ID-er, f.eks. relay_1,relay_2,relay_3"
+          },
+          "value": ""
+        },
+        {
+          "id": "interlock_delay",
+          "type": "number",
+          "label": {
+            "en": "Pause between relay changes",
+            "no": "Pause mellom reléskift"
+          },
+          "hint": {
+            "en": "All relays are switched off before a new speed relay is switched on. Protects the motor from two windings at once.",
+            "no": "Alle reléer slås av før et nytt hastighetsrelé slås på. Beskytter motoren mot to viklinger samtidig."
+          },
+          "units": {
+            "en": "ms"
+          },
+          "value": 500,
+          "min": 0,
+          "max": 5000
+        }
+      ]
+    }
+  ],
+  "discovery": "esphome"
+}

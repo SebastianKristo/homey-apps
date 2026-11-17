@@ -13,6 +13,16 @@ const http = require('http');
  * <id> is the entity's object_id (e.g. "relay_1"). Newer ESPHome versions also
  * accept the entity name; we always use what the board reported to us.
  */
+function friendly(err, host) {
+  if (err && err.code === 'ECONNREFUSED') {
+    return new Error(`${host} svarer ikke på web_server-porten. Legg til «web_server:» (port: 80) i ESPHome-YAML-en og flash kortet på nytt. / The board does not run web_server – add it to the ESPHome config and reflash.`);
+  }
+  if (err && (err.code === 'EHOSTUNREACH' || err.code === 'ENETUNREACH')) {
+    return new Error(`${host} er ikke på nettverket (slått av, eller feil IP?) / Host unreachable`);
+  }
+  return err;
+}
+
 module.exports = class EspHomeApi {
 
   constructor({ host, username, password, timeout = 5000 }) {
@@ -46,7 +56,7 @@ module.exports = class EspHomeApi {
         });
       });
       req.on('timeout', () => req.destroy(new Error(`Timeout talking to ${this.hostname}`)));
-      req.on('error', reject);
+      req.on('error', err => reject(friendly(err, this.hostname)));
       req.end();
     });
   }
@@ -130,7 +140,7 @@ module.exports = class EspHomeApi {
         });
         res.on('end', () => finish(null, req));
       });
-      req.on('error', err => finish(err, req));
+      req.on('error', err => finish(friendly(err, this.hostname), req));
       req.setTimeout(this.timeout, () => finish(new Error(`Timeout talking to ${this.hostname}`), req));
       req.end();
       setTimeout(() => finish(null, req), waitMs);

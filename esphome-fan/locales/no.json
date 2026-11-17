@@ -19,7 +19,18 @@
     "no_relays": "Velg minst ett relé",
     "type": "Viftetype",
     "type_tower": "Ståvifte (tårn)",
-    "type_desk": "Pultvifte"
+    "type_desk": "Pultvifte",
+    "search_title": "Finn vifte",
+    "searching": "Søker etter ESPHome-kort på nettverket…",
+    "none_found": "Fant ingen ESPHome-kort. Prøv igjen, eller skriv inn IP-adressen manuelt.",
+    "found_n": "Fant {n} ESPHome-kort. Vifter vises øverst.",
+    "search_again": "Søk igjen",
+    "manual": "Skriv inn IP-adresse manuelt",
+    "badge_fan": "Vifte",
+    "badge_suggested": "Forslag",
+    "badge_added": "Allerede lagt til",
+    "badge_no_web": "web_server mangler",
+    "badge_auth": "Passord"
   },
   "device": {
     "no_relays": "Ingen reléer er satt opp",

@@ -1,7 +1,7 @@
 {
   "name": {
-    "en": "Relay fan",
-    "no": "Relévifte"
+    "en": "Desk fan",
+    "no": "Pultvifte"
   },
   "class": "fan",
   "capabilities": [
@@ -205,5 +205,6 @@
         }
       ]
     }
-  ]
+  ],
+  "discovery": "esphome"
 }

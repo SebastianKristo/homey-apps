@@ -2,7 +2,7 @@
   "title": { "en": "Turn random mode on/off", "no": "Slå tilfeldig modus av/på" },
   "titleFormatted": { "en": "Turn random mode [[state]]", "no": "Slå tilfeldig modus [[state]]" },
   "args": [
-    { "type": "device", "name": "device", "filter": "driver_id=fan&capabilities=fan_random" },
+    { "type": "device", "name": "device", "filter": "driver_id=tower|desk&capabilities=fan_random" },
     { "type": "dropdown", "name": "state", "values": [
       { "id": "on", "label": { "en": "on", "no": "på" } },
       { "id": "off", "label": { "en": "off", "no": "av" } } ] }

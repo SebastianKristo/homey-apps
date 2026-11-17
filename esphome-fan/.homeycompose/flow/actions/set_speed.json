@@ -1,7 +1,7 @@
 {
   "title": { "en": "Set fan speed", "no": "Sett viftehastighet" },
   "titleFormatted": { "en": "Set speed to [[speed]]", "no": "Sett hastighet til [[speed]]" },
-  "args": [ { "type": "device", "name": "device", "filter": "driver_id=fan" }, { "type": "dropdown", "name": "speed", "title": { "en": "Speed", "no": "Hastighet" }, "values": [
+  "args": [ { "type": "device", "name": "device", "filter": "driver_id=tower|desk" }, { "type": "dropdown", "name": "speed", "title": { "en": "Speed", "no": "Hastighet" }, "values": [
       { "id": "0", "label": { "en": "Off", "no": "Av" } },
       { "id": "1", "label": { "en": "1 (low)", "no": "1 (lav)" } },
       { "id": "2", "label": { "en": "2", "no": "2" } },
