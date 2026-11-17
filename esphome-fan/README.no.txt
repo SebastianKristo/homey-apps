@@ -5,6 +5,7 @@ Fungerer rett ut av boksen med ESPHome-firmwaren «Ultimate Fan Project»: Homey
 Funksjoner:
 - Av/på (husker siste hastighet), hastighetsvelger og glidebryter
 - Tilfeldig/vind-modus
+- Svingning (eget relé, f.eks. Relay4)
 - Flows: sett hastighet, øk/senk, kjør X minutter og slå av, tilfeldig modus av/på, betingelsen «hastighet er» og triggeren «hastighet endret»
 
 Bruker ESPHome sin innebygde API (port 6053) – samme tilkobling som Home Assistant. Ingen endringer i ESPHome-konfigurasjonen trengs. Viftene finnes automatisk på nettverket, og knappetrykk på vifta vises i Homey med en gang.

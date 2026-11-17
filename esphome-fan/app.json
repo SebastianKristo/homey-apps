@@ -81,6 +81,24 @@
     "conditions": [
       {
         "title": {
+          "en": "Is oscillating",
+          "no": "Svinger"
+        },
+        "titleFormatted": {
+          "en": "!{{Is|Is not}} oscillating",
+          "no": "!{{Svinger|Svinger ikke}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=tower|desk&capabilities=fan_oscillate"
+          }
+        ],
+        "id": "is_oscillating"
+      },
+      {
+        "title": {
           "en": "Speed is",
           "no": "Hastighet er"
         },
@@ -217,6 +235,44 @@
           }
         ],
         "id": "run_for"
+      },
+      {
+        "title": {
+          "en": "Turn oscillation on/off",
+          "no": "Slå svingning av/på"
+        },
+        "titleFormatted": {
+          "en": "Turn oscillation [[state]]",
+          "no": "Slå svingning [[state]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=tower|desk&capabilities=fan_oscillate"
+          },
+          {
+            "type": "dropdown",
+            "name": "state",
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "on",
+                  "no": "på"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "off",
+                  "no": "av"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_oscillate"
       },
       {
         "title": {
@@ -556,6 +612,19 @@
               "value": 500,
               "min": 0,
               "max": 5000
+            },
+            {
+              "id": "oscillate_id",
+              "type": "text",
+              "label": {
+                "en": "Oscillation relay ID",
+                "no": "Svingning-relé-ID"
+              },
+              "hint": {
+                "en": "ESPHome switch that drives the oscillation motor, e.g. relay4. Empty = none.",
+                "no": "ESPHome-bryteren som driver svingemotoren, f.eks. relay4. Tom = ingen."
+              },
+              "value": ""
             }
           ]
         }
@@ -769,6 +838,19 @@
               "value": 500,
               "min": 0,
               "max": 5000
+            },
+            {
+              "id": "oscillate_id",
+              "type": "text",
+              "label": {
+                "en": "Oscillation relay ID",
+                "no": "Svingning-relé-ID"
+              },
+              "hint": {
+                "en": "ESPHome switch that drives the oscillation motor, e.g. relay4. Empty = none.",
+                "no": "ESPHome-bryteren som driver svingemotoren, f.eks. relay4. Tom = ingen."
+              },
+              "value": ""
             }
           ]
         }
@@ -778,6 +860,19 @@
     }
   ],
   "capabilities": {
+    "fan_oscillate": {
+      "type": "boolean",
+      "title": {
+        "en": "Oscillation",
+        "no": "Svingning"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "icon": "/assets/oscillate.svg",
+      "insights": true
+    },
     "fan_random": {
       "type": "boolean",
       "title": {

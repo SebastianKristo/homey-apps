@@ -4,7 +4,7 @@ const Homey = require('homey');
 const EspHomeNative = require('./EspHomeNative');
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const RECONNECT_KEYS = ['host', 'port', 'password', 'relays', 'poll_interval', 'mode', 'master_id', 'speed_id', 'random_id', 'max_speed'];
+const RECONNECT_KEYS = ['host', 'port', 'password', 'relays', 'poll_interval', 'mode', 'master_id', 'speed_id', 'random_id', 'max_speed', 'oscillate_id'];
 
 /**
  * Two control modes:
@@ -19,6 +19,7 @@ module.exports = class FanDevice extends Homey.Device {
   async onInit() {
     this._queue = Promise.resolve();
     this._lastSpeed = this.getStoreValue('lastSpeed') || 1;
+    this._wantOsc = !!this.getStoreValue('wantOsc');
 
     this.registerCapabilityListener('onoff', on => this.setSpeed(on ? this._lastSpeed : 0));
     this.registerCapabilityListener('fan_speed_step', v => this.setSpeed(Number(v)));
@@ -50,6 +51,7 @@ module.exports = class FanDevice extends Homey.Device {
     this.relays = String(s.relays || '').split(',').map(x => x.trim()).filter(Boolean);
     this.maxSpeed = this.mode === 'relays' ? this.relays.length : (s.max_speed || 3);
     this._syncRandomCapability().catch(this.error);
+    this._syncOscCapability().catch(this.error);
     this.homey.clearInterval(this._poll);
     this._poll = this.homey.setInterval(() => this.poll(), Math.max(2, s.poll_interval || 10) * 1000);
     this.poll();
@@ -69,6 +71,43 @@ module.exports = class FanDevice extends Homey.Device {
       this._listenRandom();
     }
     if (!want && has) await this.removeCapability('fan_random');
+  }
+
+  // ---- oscillation (separate relay, e.g. Relay4) ----
+  _listenOsc() {
+    if (this._oscListening || !this.hasCapability('fan_oscillate')) return;
+    this.registerCapabilityListener('fan_oscillate', v => this.setOscillate(v));
+    this._oscListening = true;
+  }
+
+  async _syncOscCapability() {
+    const want = !!this.getSetting('oscillate_id');
+    const has = this.hasCapability('fan_oscillate');
+    if (want && !has) await this.addCapability('fan_oscillate');
+    if (!want && has) await this.removeCapability('fan_oscillate');
+    this._listenOsc();
+  }
+
+  /** Oscillation only makes sense while the fan blows – remembered and restored on next start. */
+  setOscillate(on) {
+    const id = this.getSetting('oscillate_id');
+    if (!id) throw new Error(this.homey.__('device.no_oscillate'));
+    return this._enqueue(async () => {
+      this._wantOsc = on;
+      this.setStoreValue('wantOsc', on).catch(this.error);
+      const running = this.getSpeed() > 0;
+      await this.api.setSwitch(id, on && running);
+      await this.setCapabilityValue('fan_oscillate', on && running).catch(this.error);
+      if (on && !running) await this._applySpeed(this._lastSpeed);
+    });
+  }
+
+  async _afterSpeed(speed) {
+    const id = this.getSetting('oscillate_id');
+    if (!id) return;
+    const want = speed > 0 && !!this._wantOsc;
+    await this.api.setSwitch(id, want);
+    await this.setCapabilityValue('fan_oscillate', want).catch(this.error);
   }
 
   async onSettings({ changedKeys }) {
@@ -157,6 +196,21 @@ module.exports = class FanDevice extends Homey.Device {
       const { speed, random } = await this._readState();
       if (!this.getAvailable()) await this.setAvailable();
       await this._reflect(speed, random);
+      const oscId = this.getSetting('oscillate_id');
+      if (oscId && this.hasCapability('fan_oscillate')) {
+        const osc = await this.api.getSwitch(oscId);
+        if (osc && speed === 0) {
+          // fan switched off by its own button – stop the oscillation motor too
+          await this.api.setSwitch(oscId, false);
+          await this.setCapabilityValue('fan_oscillate', false).catch(this.error);
+        } else {
+          await this.setCapabilityValue('fan_oscillate', osc).catch(this.error);
+          if (speed > 0) {
+            this._wantOsc = osc;
+            this.setStoreValue('wantOsc', osc).catch(this.error);
+          }
+        }
+      }
     } catch (err) {
       this.error('poll failed:', err.message);
       await this.setUnavailable(err.message).catch(this.error);
@@ -194,6 +248,7 @@ module.exports = class FanDevice extends Homey.Device {
         await this.api.setSwitch(s.master_id, true);
       }
       await this._reflect(speed, false);
+      await this._afterSpeed(speed);
       if (!this.getAvailable()) await this.setAvailable();
       return;
     }
@@ -208,6 +263,7 @@ module.exports = class FanDevice extends Homey.Device {
       await this.api.setSwitch(target, true);
     }
     await this._reflect(speed);
+    await this._afterSpeed(speed);
     if (!this.getAvailable()) await this.setAvailable();
   }
 

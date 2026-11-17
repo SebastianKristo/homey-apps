@@ -1,0 +1,5 @@
+{
+  "title": { "en": "Is oscillating", "no": "Svinger" },
+  "titleFormatted": { "en": "!{{Is|Is not}} oscillating", "no": "!{{Svinger|Svinger ikke}}" },
+  "args": [ { "type": "device", "name": "device", "filter": "driver_id=tower|desk&capabilities=fan_oscillate" } ]
+}

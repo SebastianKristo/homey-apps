@@ -95,10 +95,12 @@ module.exports = class FanDriver extends Homey.Driver {
     return boards.sort((a, b) => (b.suggested - a.suggested) || a.name.localeCompare(b.name));
   }
 
-  _settings(conn, scan, relays) {
+  _settings(conn, scan, relays, oscillate) {
+    const osc = { oscillate_id: oscillate || '' };
     if (scan.ultimate) {
       return {
         ...conn,
+        ...osc,
         mode: 'ultimate',
         master_id: scan.master,
         speed_id: scan.speed,
@@ -107,7 +109,7 @@ module.exports = class FanDriver extends Homey.Driver {
       };
     }
     if (!relays || !relays.length) throw new Error(this.homey.__('pair.no_relays'));
-    return { ...conn, mode: 'relays', relays: relays.join(','), max_speed: relays.length };
+    return { ...conn, ...osc, mode: 'relays', relays: relays.join(','), max_speed: relays.length };
   }
 
   _registerHandlers(session, onCreate, repairing = false) {
@@ -128,9 +130,9 @@ module.exports = class FanDriver extends Homey.Driver {
       return scan;
     });
 
-    session.setHandler('create', async ({ name, relays }) => {
+    session.setHandler('create', async ({ name, relays, oscillate }) => {
       if (!current) throw new Error('Scan first');
-      return onCreate(current, this._settings(current.conn, current.scan, relays), name);
+      return onCreate(current, this._settings(current.conn, current.scan, relays, oscillate), name);
     });
   }
 

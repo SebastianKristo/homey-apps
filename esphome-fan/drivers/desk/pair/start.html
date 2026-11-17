@@ -51,6 +51,11 @@
       <label class="homey-form-label" for="name" data-i18n="pair.name"></label>
       <input class="homey-form-input" id="name" type="text" />
     </div>
+    <div class="homey-form-group">
+      <label class="homey-form-label" for="osc" data-i18n="pair.oscillation"></label>
+      <select class="homey-form-select" id="osc"></select>
+      <p class="homey-form-helper" data-i18n="pair.oscillation_hint" style="font-size:12px;opacity:.7"></p>
+    </div>
     <div id="relayGroup" style="display:none">
       <p class="homey-subtitle" data-i18n="pair.relay_hint"></p>
       <div id="slots"></div>
@@ -138,6 +143,14 @@ async function connect(data) {
     const type = await Homey.emit('fan_type');
     $('name').value = data.name || Homey.__('pair.type_' + type);
     $('slots').innerHTML = '';
+    // oscillation relay: switches not used for speed; tower fans pre-select a likely one
+    const used = /^(master|random|relay[123])$/i;
+    const candidates = scan.switches.filter(s => !used.test(s.id) || !scan.ultimate);
+    $('osc').innerHTML = `<option value="">${Homey.__('pair.oscillation_none')}</option>` + candidates
+      .map(s => `<option value="${esc(s.id)}">${esc(s.name)} (${esc(s.id)})</option>`).join('');
+    const named = candidates.find(s => /osc|swing|sving|rotat|oscill/i.test(s.id + s.name));
+    const relay4 = candidates.find(s => /^relay_?4$/i.test(s.id));
+    $('osc').value = named ? named.id : (type === 'tower' && relay4 ? relay4.id : '');
     if (scan.ultimate) {
       $('detected').textContent = Homey.__('pair.detected_ultimate').replace('{n}', scan.maxSpeed);
       $('relayGroup').style.display = 'none';
@@ -174,7 +187,7 @@ $('form2').addEventListener('submit', async e => {
   const relays = [...document.querySelectorAll('select.relay')].map(s => s.value).filter(Boolean);
   Homey.showLoadingOverlay();
   try {
-    const device = await Homey.emit('create', { name: $('name').value, relays });
+    const device = await Homey.emit('create', { name: $('name').value, relays, oscillate: $('osc').value });
     if (device) await Homey.createDevice(device);
     Homey.done();
   } catch (err) {

@@ -204,6 +204,19 @@
           "value": 500,
           "min": 0,
           "max": 5000
+        },
+        {
+          "id": "oscillate_id",
+          "type": "text",
+          "label": {
+            "en": "Oscillation relay ID",
+            "no": "Svingning-relé-ID"
+          },
+          "hint": {
+            "en": "ESPHome switch that drives the oscillation motor, e.g. relay4. Empty = none.",
+            "no": "ESPHome-bryteren som driver svingemotoren, f.eks. relay4. Tom = ingen."
+          },
+          "value": ""
         }
       ]
     }

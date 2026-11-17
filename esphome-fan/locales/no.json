@@ -32,11 +32,15 @@
     "port": "Port",
     "badge_offline": "Svarer ikke",
     "badge_encrypted": "Kryptert",
-    "already_added": "Denne vifta er allerede lagt til"
+    "already_added": "Denne vifta er allerede lagt til",
+    "oscillation": "Svingning",
+    "oscillation_none": "Ingen",
+    "oscillation_hint": "Reléet som driver svingemotoren (ofte Relay4 på 4-relékortet)."
   },
   "device": {
     "no_relays": "Ingen reléer er satt opp",
     "no_random": "Tilfeldig modus er ikke tilgjengelig på denne vifta",
-    "disconnected": "Mistet kontakt med vifta – kobler til igjen…"
+    "disconnected": "Mistet kontakt med vifta – kobler til igjen…",
+    "no_oscillate": "Svingning er ikke satt opp for denne vifta"
   }
 }

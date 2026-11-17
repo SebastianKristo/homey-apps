@@ -11,6 +11,9 @@ module.exports = class EspHomeFanApp extends Homey.App {
     card('speed_up').registerRunListener(({ device }) => device.stepSpeed(1));
     card('speed_down').registerRunListener(({ device }) => device.stepSpeed(-1));
     card('set_random').registerRunListener(({ device, state }) => device.setRandom(state === 'on'));
+    card('set_oscillate').registerRunListener(({ device, state }) => device.setOscillate(state === 'on'));
+    this.homey.flow.getConditionCard('is_oscillating')
+      .registerRunListener(({ device }) => !!device.getCapabilityValue('fan_oscillate'));
     this.homey.flow.getConditionCard('speed_is')
       .registerRunListener(({ device, speed }) => device.getSpeed() === Number(speed));
     this.speedChanged = this.homey.flow.getDeviceTriggerCard('speed_changed');

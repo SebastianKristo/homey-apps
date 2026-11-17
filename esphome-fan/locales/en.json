@@ -32,11 +32,15 @@
     "port": "Port",
     "badge_offline": "Not responding",
     "badge_encrypted": "Encrypted",
-    "already_added": "This fan is already added"
+    "already_added": "This fan is already added",
+    "oscillation": "Oscillation",
+    "oscillation_none": "None",
+    "oscillation_hint": "Relay that drives the oscillation motor (often Relay4 on the 4-relay board)."
   },
   "device": {
     "no_relays": "No relays configured",
     "no_random": "Random mode is not available on this fan",
-    "disconnected": "Connection to the fan lost – reconnecting…"
+    "disconnected": "Connection to the fan lost – reconnecting…",
+    "no_oscillate": "Oscillation is not set up for this fan"
   }
 }

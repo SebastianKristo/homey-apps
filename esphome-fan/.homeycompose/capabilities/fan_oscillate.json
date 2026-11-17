@@ -1,0 +1,10 @@
+{
+  "type": "boolean",
+  "title": { "en": "Oscillation", "no": "Svingning" },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "icon": "/assets/oscillate.svg",
+  "insights": true
+}
